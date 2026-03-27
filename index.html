@@ -1,0 +1,1592 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Итоговый проект | HTML, CSS и JavaScript</title>
+    <style>
+        :root {
+            color-scheme: dark;
+            --bg: #12161d;
+            --bg-deep: #090c11;
+            --surface: rgba(24, 29, 38, 0.82);
+            --text: #edf2f7;
+            --muted: #a5afbc;
+            --accent: #f29d8a;
+            --accent-soft: rgba(242, 157, 138, 0.18);
+            --accent-gold: #d6c18c;
+            --line: rgba(237, 242, 247, 0.12);
+            --shadow-lg: 0 30px 80px rgba(0, 0, 0, 0.34);
+            --shadow-md: 0 18px 45px rgba(0, 0, 0, 0.24);
+            --radius-xl: 30px;
+            --radius-lg: 22px;
+            --container: 1180px;
+            --transition: 220ms ease;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            min-width: 320px;
+            font-family: "Segoe UI Variable", "Trebuchet MS", Verdana, sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at top left, rgba(242, 157, 138, 0.16), transparent 30%),
+                radial-gradient(circle at top right, rgba(136, 193, 180, 0.12), transparent 24%),
+                linear-gradient(180deg, #161b24 0%, var(--bg) 55%, var(--bg-deep) 100%);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before,
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        body::before {
+            background:
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 32px 32px;
+            mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.12), transparent 85%);
+        }
+
+        body::after {
+            background:
+                radial-gradient(circle at 12% 14%, rgba(242, 157, 138, 0.14), transparent 18%),
+                radial-gradient(circle at 88% 10%, rgba(136, 193, 180, 0.09), transparent 16%),
+                radial-gradient(circle at 80% 84%, rgba(214, 193, 140, 0.1), transparent 18%);
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        code {
+            font-family: Consolas, "Courier New", monospace;
+        }
+
+        button,
+        input,
+        textarea,
+        select {
+            font: inherit;
+        }
+
+        .page {
+            width: min(calc(100% - 32px), var(--container));
+            margin: 0 auto;
+            padding: 24px 0 48px;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 10px 0 26px;
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            font-size: 0.82rem;
+        }
+
+        .brand-mark {
+            width: 42px;
+            height: 42px;
+            display: grid;
+            place-items: center;
+            border-radius: 14px;
+            background: linear-gradient(145deg, rgba(242, 107, 58, 0.96), rgba(242, 193, 78, 0.88));
+            box-shadow: var(--shadow-md);
+            color: #fff9f4;
+            font-size: 1rem;
+        }
+
+        .nav {
+            display: inline-flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .nav a {
+            padding: 10px 16px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--muted);
+            transition: transform var(--transition), background var(--transition), color var(--transition);
+        }
+
+        .nav a:hover,
+        .nav a:focus-visible {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text);
+            transform: translateY(-2px);
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+            gap: 28px;
+            align-items: stretch;
+            padding: 26px 0 18px;
+        }
+
+        .hero-copy,
+        .hero-visual,
+        .section-card,
+        .demo-panel {
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: var(--shadow-lg);
+            backdrop-filter: blur(14px);
+        }
+
+        .hero-copy {
+            border-radius: var(--radius-xl);
+            padding: 42px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-copy::after {
+            content: "";
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            right: -60px;
+            top: -60px;
+            background: radial-gradient(circle, rgba(242, 157, 138, 0.16), transparent 72%);
+            border-radius: 50%;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--muted);
+            font-size: 0.82rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .eyebrow::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-gold));
+        }
+
+        h1,
+        h2,
+        h3 {
+            margin: 0;
+            font-family: "Bahnschrift", "Segoe UI Variable", "Trebuchet MS", sans-serif;
+            line-height: 0.98;
+            letter-spacing: -0.03em;
+        }
+
+        h1 {
+            margin-top: 22px;
+            font-size: clamp(3rem, 7vw, 5.75rem);
+            max-width: 11ch;
+        }
+
+        .lead {
+            margin: 22px 0 0;
+            max-width: 60ch;
+            font-size: 1.08rem;
+            line-height: 1.7;
+            color: var(--muted);
+        }
+
+        .lead code,
+        .hero-points code {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text);
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-top: 30px;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-height: 52px;
+            padding: 0 22px;
+            border: 0;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+        }
+
+        .button:hover,
+        .button:focus-visible {
+            transform: translateY(-2px);
+        }
+
+        .button-primary {
+            background: linear-gradient(135deg, var(--accent), #ff965f);
+            color: #130f12;
+            box-shadow: 0 16px 30px rgba(242, 157, 138, 0.18);
+        }
+
+        .button-secondary {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .hero-points {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+            margin: 34px 0 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .hero-points li {
+            padding: 16px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .hero-points strong {
+            display: block;
+            font-size: 1.18rem;
+            margin-bottom: 6px;
+        }
+
+        .hero-points span {
+            color: var(--muted);
+            line-height: 1.55;
+            font-size: 0.95rem;
+        }
+
+        .hero-visual {
+            border-radius: var(--radius-xl);
+            padding: 28px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-visual::before {
+            content: "";
+            position: absolute;
+            inset: auto -60px -60px auto;
+            width: 240px;
+            height: 240px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(136, 193, 180, 0.18), transparent 74%);
+        }
+
+        .visual-window {
+            position: relative;
+            border-radius: 24px;
+            padding: 18px;
+            background: linear-gradient(180deg, rgba(18, 22, 29, 0.92), rgba(24, 29, 38, 0.88));
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+        }
+
+        .window-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+
+        .window-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.18);
+        }
+
+        .window-dot:nth-child(1) { background: #ff7e67; }
+        .window-dot:nth-child(2) { background: #f7c55c; }
+        .window-dot:nth-child(3) { background: #47c47b; }
+
+        .visual-stack {
+            display: grid;
+            gap: 14px;
+        }
+
+        .stack-card {
+            padding: 18px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: var(--shadow-md);
+            animation: drift 7s ease-in-out infinite;
+        }
+
+        .stack-card:nth-child(2) { animation-delay: -1.8s; }
+        .stack-card:nth-child(3) { animation-delay: -3.4s; }
+
+        .stack-card header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .stack-card strong {
+            font-size: 1rem;
+        }
+
+        .stack-card span {
+            color: var(--muted);
+            font-size: 0.92rem;
+            line-height: 1.6;
+        }
+
+        .stack-card code {
+            display: inline-flex;
+            align-items: center;
+            padding: 7px 10px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.06);
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 0.8rem;
+        }
+
+        .section {
+            margin-top: 24px;
+        }
+
+        .section-card {
+            border-radius: var(--radius-xl);
+            padding: 34px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 26px;
+        }
+
+        .section-header p {
+            margin: 12px 0 0;
+            max-width: 56ch;
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3.4rem);
+            max-width: 10ch;
+        }
+
+        .pillars {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .pillar {
+            padding: 26px;
+            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pillar::after {
+            content: "";
+            position: absolute;
+            inset: auto -30px -30px auto;
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            opacity: 0.25;
+        }
+
+        .pillar:nth-child(1)::after { background: radial-gradient(circle, rgba(15, 139, 141, 0.65), transparent 68%); }
+        .pillar:nth-child(2)::after { background: radial-gradient(circle, rgba(242, 193, 78, 0.9), transparent 68%); }
+        .pillar:nth-child(3)::after { background: radial-gradient(circle, rgba(242, 107, 58, 0.85), transparent 68%); }
+
+        .pillar-index {
+            display: inline-grid;
+            place-items: center;
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            margin-bottom: 18px;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+            color: var(--text);
+            font-weight: 800;
+        }
+
+        .pillar h3 {
+            font-size: 1.6rem;
+            margin-bottom: 10px;
+        }
+
+        .pillar p {
+            margin: 0 0 18px;
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        .pillar ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            display: grid;
+            gap: 10px;
+        }
+
+        .pillar li {
+            position: relative;
+            padding-left: 18px;
+            color: var(--text);
+            line-height: 1.55;
+        }
+
+        .pillar li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 10px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+
+        .flow {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .flow-step {
+            padding: 26px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.03));
+        }
+
+        .flow-step strong {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 52px;
+            min-height: 34px;
+            padding: 0 12px;
+            border-radius: 999px;
+            margin-bottom: 18px;
+            background: rgba(255, 255, 255, 0.06);
+            letter-spacing: 0.08em;
+            font-size: 0.82rem;
+        }
+
+        .flow-step h3 {
+            font-size: 1.45rem;
+            margin-bottom: 10px;
+        }
+
+        .flow-step p {
+            margin: 0;
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        .demo-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+            gap: 18px;
+        }
+
+        .demo-panel {
+            border-radius: 28px;
+            padding: 28px;
+        }
+
+        .demo-panel h3 {
+            font-size: 1.45rem;
+            margin-bottom: 10px;
+        }
+
+        .demo-panel p {
+            margin: 0;
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        .control-grid {
+            display: grid;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .demo-state-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 22px;
+        }
+
+        .state-tile {
+            padding: 14px;
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+            transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition), background var(--transition);
+        }
+
+        .state-tile strong {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.84rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .state-tile span {
+            display: block;
+            line-height: 1.5;
+            color: var(--text);
+            font-size: 0.95rem;
+        }
+
+        .state-tile.is-active {
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.07);
+            box-shadow: 0 0 0 1px var(--accent-soft), 0 14px 34px rgba(0, 0, 0, 0.18);
+            transform: translateY(-2px);
+        }
+
+        .control-button {
+            justify-content: flex-start;
+            width: 100%;
+            padding: 16px 18px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: transform var(--transition), border-color var(--transition), background var(--transition);
+        }
+
+        .control-button.is-active {
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 1px var(--accent-soft);
+        }
+
+        .control-button:hover,
+        .control-button:focus-visible {
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.14);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .control-badge {
+            width: 40px;
+            height: 40px;
+            display: grid;
+            place-items: center;
+            border-radius: 14px;
+            background: linear-gradient(145deg, rgba(136, 193, 180, 0.14), rgba(242, 157, 138, 0.14));
+            font-weight: 800;
+        }
+
+        .snippet-grid {
+            display: grid;
+            gap: 14px;
+            margin-top: 26px;
+        }
+
+        .snippet {
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(28, 35, 44, 0.96);
+            transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+        }
+
+        .snippet.is-highlighted {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 1px var(--accent-soft), 0 18px 40px rgba(0, 0, 0, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .snippet header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.88);
+            font-size: 0.88rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .snippet-status {
+            display: inline-flex;
+            align-items: center;
+            min-height: 28px;
+            padding: 0 10px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.78);
+            font-size: 0.74rem;
+            transition: background var(--transition), color var(--transition);
+        }
+
+        .snippet-status.is-active {
+            background: var(--accent-soft);
+            color: var(--accent);
+        }
+
+        .snippet pre {
+            margin: 0;
+            padding: 16px;
+            overflow-x: auto;
+            color: #f4efe6;
+            font-size: 0.9rem;
+            line-height: 1.7;
+            font-family: Consolas, "Courier New", monospace;
+        }
+
+        .demo-stage {
+            border-radius: 26px;
+            padding: 18px;
+            min-height: 100%;
+            background: linear-gradient(145deg, rgba(29, 24, 27, 0.92), rgba(26, 22, 27, 0.72));
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+            overflow: hidden;
+            transition: background 260ms ease, transform 260ms ease;
+        }
+
+        .demo-stage::before {
+            content: "";
+            position: absolute;
+            inset: auto -80px -80px auto;
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            opacity: 0.42;
+            transition: background 260ms ease;
+        }
+
+        .theme-sunset::before { background: radial-gradient(circle, rgba(242, 157, 138, 0.44), transparent 70%); }
+        .theme-ocean::before { background: radial-gradient(circle, rgba(136, 193, 180, 0.4), transparent 70%); }
+        .theme-forest::before { background: radial-gradient(circle, rgba(159, 187, 142, 0.36), transparent 70%); }
+        .theme-sunset { background: linear-gradient(145deg, rgba(52, 36, 40, 0.96), rgba(34, 27, 33, 0.88)); }
+        .theme-ocean { background: linear-gradient(145deg, rgba(24, 40, 45, 0.96), rgba(19, 31, 36, 0.88)); }
+        .theme-forest { background: linear-gradient(145deg, rgba(29, 42, 33, 0.96), rgba(22, 31, 25, 0.88)); }
+
+        .browser {
+            border-radius: 22px;
+            padding: 18px;
+            background: rgba(10, 14, 20, 0.44);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: var(--shadow-md);
+            position: relative;
+            z-index: 1;
+        }
+
+        .browser-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .browser-title {
+            font-size: 0.92rem;
+            color: var(--muted);
+        }
+
+        .tag-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 12px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text);
+            font-size: 0.88rem;
+        }
+
+        .tag::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+
+        .demo-card {
+            margin-top: 18px;
+            padding: 24px;
+            border-radius: 24px;
+            background: rgba(14, 18, 24, 0.84);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: transform 280ms ease, box-shadow 280ms ease, border-color 280ms ease;
+        }
+
+        .demo-card.is-active {
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
+        }
+
+        .demo-card-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 14px;
+        }
+
+        .demo-label {
+            display: inline-flex;
+            align-items: center;
+            min-height: 34px;
+            padding: 0 14px;
+            border-radius: 999px;
+            background: var(--accent-soft);
+            color: var(--accent);
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .demo-card h3 {
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
+            margin-bottom: 10px;
+        }
+
+        .demo-card p {
+            margin: 0;
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        .demo-list {
+            display: grid;
+            gap: 10px;
+            list-style: none;
+            padding: 0;
+            margin: 18px 0 0;
+        }
+
+        .demo-list li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text);
+        }
+
+        .demo-list li::before {
+            content: "";
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: currentColor;
+            opacity: 0.55;
+            flex: none;
+        }
+
+        .demo-extra {
+            border: 1px dashed rgba(255, 255, 255, 0.18);
+        }
+
+        .stage-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-top: 22px;
+            flex-wrap: wrap;
+        }
+
+        .counter {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .counter span {
+            color: var(--muted);
+            font-size: 0.92rem;
+        }
+
+        .counter strong {
+            font-size: 2.4rem;
+            line-height: 1;
+            font-family: "Bahnschrift", "Segoe UI Variable", sans-serif;
+        }
+
+        .mini-action {
+            min-height: 48px;
+            padding: 0 18px;
+            border-radius: 16px;
+            border: 0;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text);
+            transition: transform var(--transition), background var(--transition);
+        }
+
+        .mini-action:hover,
+        .mini-action:focus-visible {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .status-box {
+            margin-top: 16px;
+            padding: 16px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--muted);
+            line-height: 1.7;
+            position: relative;
+            z-index: 1;
+        }
+
+        footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+            padding: 24px 4px 10px;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(22px);
+            transition: opacity 500ms ease, transform 500ms ease;
+        }
+
+        .fade-up.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes drift {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        @keyframes pulseCard {
+            0% { transform: translateY(0) scale(1); }
+            45% { transform: translateY(-6px) scale(1.015); }
+            100% { transform: translateY(0) scale(1); }
+        }
+
+        .demo-card.is-pulsing {
+            animation: pulseCard 700ms ease;
+        }
+
+        @media (max-width: 1080px) {
+            .hero,
+            .demo-layout,
+            .pillars,
+            .flow {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-points {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .demo-state-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-header {
+                align-items: start;
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 720px) {
+            .page {
+                width: min(calc(100% - 20px), var(--container));
+                padding-top: 16px;
+            }
+
+            .topbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .nav {
+                justify-content: space-between;
+            }
+
+            .hero-copy,
+            .hero-visual,
+            .section-card,
+            .demo-panel {
+                padding: 22px;
+            }
+
+            h1 {
+                max-width: none;
+            }
+
+            .hero-points {
+                grid-template-columns: 1fr;
+            }
+
+            .demo-card-head,
+            .stage-footer,
+            footer {
+                align-items: start;
+                flex-direction: column;
+            }
+
+            .nav a,
+            .button,
+            .control-button,
+            .mini-action {
+                width: 100%;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            *,
+            *::before,
+            *::after {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header class="topbar fade-up">
+            <a class="brand" href="#home">
+                <span class="brand-mark">FP</span>
+                <span>Final Project Demo</span>
+            </a>
+            <nav class="nav" aria-label="Навигация по странице">
+                <a href="#principles">Принципы</a>
+                <a href="#workflow">Этапы</a>
+                <a href="#demo">Демо</a>
+            </nav>
+        </header>
+
+        <main id="home">
+            <section class="hero">
+                <div class="hero-copy fade-up">
+                    <span class="eyebrow">HTML • CSS • JavaScript</span>
+                    <h1>Как работает современная веб-страница</h1>
+                    <p class="lead">
+                        Этот <code>index.html</code> показывает роль каждой технологии во фронтенде: HTML задает структуру,
+                        CSS отвечает за внешний вид, а JavaScript добавляет реакцию на действия пользователя.
+                        Страница подходит для сдачи как итоговый проект, потому что не только объясняет теорию,
+                        но и сразу показывает ее в действии.
+                    </p>
+                    <div class="hero-actions">
+                        <a class="button button-primary" href="#demo">Открыть живую демонстрацию</a>
+                        <a class="button button-secondary" href="#workflow">Посмотреть этапы сборки</a>
+                    </div>
+                    <ul class="hero-points">
+                        <li>
+                            <strong>1 файл</strong>
+                            <span>Весь проект собран в одном <code>index.html</code>, что удобно для сдачи и показа.</span>
+                        </li>
+                        <li>
+                            <strong>3 технологии</strong>
+                            <span>Структура, стиль и интерактивность представлены на одной странице.</span>
+                        </li>
+                        <li>
+                            <strong>100% наглядно</strong>
+                            <span>Встроенное демо сразу показывает связь между кодом и результатом.</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="hero-visual fade-up">
+                    <div class="visual-window">
+                        <div class="window-bar" aria-hidden="true">
+                            <span class="window-dot"></span>
+                            <span class="window-dot"></span>
+                            <span class="window-dot"></span>
+                        </div>
+                        <div class="visual-stack">
+                            <article class="stack-card">
+                                <header>
+                                    <strong>HTML</strong>
+                                    <code>&lt;section&gt;</code>
+                                </header>
+                                <span>Создает каркас страницы: заголовки, блоки, карточки, кнопки и смысловую структуру.</span>
+                            </article>
+                            <article class="stack-card">
+                                <header>
+                                    <strong>CSS</strong>
+                                    <code>.card { ... }</code>
+                                </header>
+                                <span>Формирует стиль: сетку, отступы, цвета, типографику, атмосферу и адаптивность.</span>
+                            </article>
+                            <article class="stack-card">
+                                <header>
+                                    <strong>JavaScript</strong>
+                                    <code>addEventListener()</code>
+                                </header>
+                                <span>Делает страницу живой: реагирует на клики, меняет состояние блоков и обновляет контент.</span>
+                            </article>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section" id="principles">
+                <div class="section-card fade-up">
+                    <div class="section-header">
+                        <div>
+                            <span class="eyebrow">Основа проекта</span>
+                            <h2 class="section-title">Три роли одной страницы</h2>
+                        </div>
+                        <p>
+                            Хороший итоговый проект показывает не только красивый интерфейс, но и понимание того,
+                            как именно этот интерфейс собирается. Ниже коротко показано, что делает каждая технология.
+                        </p>
+                    </div>
+
+                    <div class="pillars">
+                        <article class="pillar">
+                            <div class="pillar-index">01</div>
+                            <h3>HTML</h3>
+                            <p>Структура страницы и логика расположения контента.</p>
+                            <ul>
+                                <li>Создает заголовки, секции, карточки и кнопки.</li>
+                                <li>Помогает браузеру понять смысл и порядок элементов.</li>
+                                <li>Формирует основу, на которую потом накладываются стиль и поведение.</li>
+                            </ul>
+                        </article>
+
+                        <article class="pillar">
+                            <div class="pillar-index">02</div>
+                            <h3>CSS</h3>
+                            <p>Внешний вид, композиция и выразительность интерфейса.</p>
+                            <ul>
+                                <li>Настраивает цвета, шрифты, фон, сетку и адаптивность.</li>
+                                <li>Создает ощущение качества через детали, тени и анимации.</li>
+                                <li>Делает один и тот же HTML заметно сильнее визуально.</li>
+                            </ul>
+                        </article>
+
+                        <article class="pillar">
+                            <div class="pillar-index">03</div>
+                            <h3>JavaScript</h3>
+                            <p>Интерактивность и реакция на действия пользователя.</p>
+                            <ul>
+                                <li>Слушает клики и меняет содержимое без перезагрузки страницы.</li>
+                                <li>Переключает состояния, темы и анимации.</li>
+                                <li>Показывает, что страница может быть не только статичной, но и живой.</li>
+                            </ul>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section" id="workflow">
+                <div class="section-card fade-up">
+                    <div class="section-header">
+                        <div>
+                            <span class="eyebrow">Этапы сборки</span>
+                            <h2 class="section-title">Как создается итоговый сайт</h2>
+                        </div>
+                        <p>
+                            Логика работы проста: сначала появляется каркас, потом он получает визуальный стиль,
+                            а затем в него добавляется поведение. Именно это и показывает текущая страница.
+                        </p>
+                    </div>
+
+                    <div class="flow">
+                        <article class="flow-step">
+                            <strong>Шаг 1</strong>
+                            <h3>Собрать структуру</h3>
+                            <p>
+                                Создаются секции, заголовки, карточки, текстовые блоки и кнопки. Без этого у сайта
+                                нет основы, на которую можно опереться.
+                            </p>
+                        </article>
+
+                        <article class="flow-step">
+                            <strong>Шаг 2</strong>
+                            <h3>Оформить интерфейс</h3>
+                            <p>
+                                Затем подключается CSS: задаются цвета, сетки, отступы, декоративные элементы,
+                                адаптация под экран и общая атмосфера проекта.
+                            </p>
+                        </article>
+
+                        <article class="flow-step">
+                            <strong>Шаг 3</strong>
+                            <h3>Добавить интерактивность</h3>
+                            <p>
+                                На последнем этапе JavaScript связывает элементы с действиями пользователя:
+                                страница начинает реагировать на клики и менять состояние в реальном времени.
+                            </p>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section" id="demo">
+                <div class="section-card fade-up">
+                    <div class="section-header">
+                        <div>
+                            <span class="eyebrow">Живое демо</span>
+                            <h2 class="section-title">Посмотреть принцип в действии</h2>
+                        </div>
+                        <p>
+                            Слева находятся действия, которые имитируют работу HTML, CSS и JavaScript.
+                            Справа сразу видно, как меняется результат на готовой карточке проекта.
+                        </p>
+                    </div>
+
+                    <div class="demo-layout">
+                        <div class="demo-panel">
+                            <h3>Управление примером</h3>
+                            <p>
+                                Нажимайте кнопки по очереди: сначала добавьте новый HTML-элемент, потом смените оформление,
+                                а затем запустите JavaScript, чтобы увидеть изменение состояния.
+                            </p>
+
+                            <div class="control-grid">
+                                <button class="control-button" id="toggleStructure" type="button">
+                                    <span class="control-badge">H</span>
+                                    <span>Добавить HTML-элемент в структуру</span>
+                                </button>
+
+                                <button class="control-button" id="cycleTheme" type="button">
+                                    <span class="control-badge">C</span>
+                                    <span>Переключить CSS-тему карточки</span>
+                                </button>
+
+                                <button class="control-button" id="runInteraction" type="button">
+                                    <span class="control-badge">J</span>
+                                    <span>Запустить JavaScript-событие</span>
+                                </button>
+
+                                <button class="control-button" id="resetDemo" type="button">
+                                    <span class="control-badge">R</span>
+                                    <span>Сбросить демонстрацию</span>
+                                </button>
+                            </div>
+
+                            <div class="demo-state-grid" aria-label="Текущее состояние демонстрации">
+                                <article class="state-tile" id="htmlStateTile">
+                                    <strong>HTML</strong>
+                                    <span id="htmlStateText">Базовая структура</span>
+                                </article>
+                                <article class="state-tile" id="cssStateTile">
+                                    <strong>CSS</strong>
+                                    <span id="cssStateText">Пастельный тёплый акцент</span>
+                                </article>
+                                <article class="state-tile" id="jsStateTile">
+                                    <strong>JavaScript</strong>
+                                    <span id="jsStateText">Ожидание действия</span>
+                                </article>
+                            </div>
+
+                            <div class="snippet-grid" aria-label="Фрагменты кода">
+                                <article class="snippet" id="htmlSnippet">
+                                    <header>
+                                        <span>HTML</span>
+                                        <span class="snippet-status" id="htmlSnippetStatus">Базово</span>
+                                    </header>
+                                    <pre><code id="htmlCode"></code></pre>
+                                </article>
+
+                                <article class="snippet" id="cssSnippet">
+                                    <header>
+                                        <span>CSS</span>
+                                        <span class="snippet-status" id="cssSnippetStatus">Тема 1</span>
+                                    </header>
+                                    <pre><code id="cssCode"></code></pre>
+                                </article>
+
+                                <article class="snippet" id="jsSnippet">
+                                    <header>
+                                        <span>JavaScript</span>
+                                        <span class="snippet-status" id="jsSnippetStatus">Ожидание</span>
+                                    </header>
+                                    <pre><code id="jsCode"></code></pre>
+                                </article>
+                            </div>
+                        </div>
+
+                        <div class="demo-panel">
+                            <div class="demo-stage theme-sunset" id="demoStage">
+                                <div class="browser">
+                                    <div class="browser-top">
+                                        <div class="window-bar" aria-hidden="true">
+                                            <span class="window-dot"></span>
+                                            <span class="window-dot"></span>
+                                            <span class="window-dot"></span>
+                                        </div>
+                                        <span class="browser-title">project-demo.local</span>
+                                    </div>
+
+                                    <div class="tag-row">
+                                        <span class="tag">HTML: каркас</span>
+                                        <span class="tag">CSS: стиль</span>
+                                        <span class="tag">JS: действие</span>
+                                    </div>
+
+                                    <article class="demo-card" id="demoCard">
+                                        <div class="demo-card-head">
+                                            <span class="demo-label" id="demoLabel">Пастельный тёмный режим</span>
+                                        </div>
+                                        <h3>Интерактивный макет</h3>
+                                        <p id="demoText">
+                                            В этом блоке объединяются три технологии: структура уже создана,
+                                            стиль уже применен, а JavaScript может менять состояние содержимого.
+                                        </p>
+
+                                        <ul class="demo-list" id="demoList">
+                                            <li>Секция с заголовком и текстом</li>
+                                            <li>Карточки и навигация</li>
+                                            <li>Кнопки для управления интерфейсом</li>
+                                        </ul>
+
+                                        <div class="stage-footer">
+                                            <div class="counter">
+                                                <span>Счетчик событий JavaScript</span>
+                                                <strong id="counterValue">0</strong>
+                                            </div>
+                                            <button class="mini-action" id="miniAction" type="button">Повторить анимацию</button>
+                                        </div>
+                                    </article>
+                                </div>
+
+                                <div class="status-box" id="statusBox">
+                                    Сейчас показано исходное состояние страницы: HTML уже построил блоки, CSS оформил интерфейс,
+                                    а JavaScript пока ждет действие пользователя.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <footer class="fade-up">
+            <span>Итоговый проект по теме создания сайтов: принцип работы HTML, CSS и JavaScript.</span>
+            <span>Файл: index.html</span>
+        </footer>
+    </div>
+
+    <script>
+        const state = {
+            hasExtraItem: false,
+            themeIndex: 0,
+            counter: 0,
+            lastChanged: ""
+        };
+
+        const themes = [
+            {
+                name: "Sunset",
+                className: "theme-sunset",
+                label: "Пастельный тёплый акцент",
+                accent: "#f29d8a",
+                soft: "rgba(242, 157, 138, 0.18)",
+                line: "rgba(242, 157, 138, 0.24)"
+            },
+            {
+                name: "Ocean",
+                className: "theme-ocean",
+                label: "Пастельный холодный акцент",
+                accent: "#88c1b4",
+                soft: "rgba(136, 193, 180, 0.18)",
+                line: "rgba(136, 193, 180, 0.24)"
+            },
+            {
+                name: "Forest",
+                className: "theme-forest",
+                label: "Пастельный природный акцент",
+                accent: "#9fbb8e",
+                soft: "rgba(159, 187, 142, 0.18)",
+                line: "rgba(159, 187, 142, 0.24)"
+            }
+        ];
+
+        const toggleStructureButton = document.getElementById("toggleStructure");
+        const cycleThemeButton = document.getElementById("cycleTheme");
+        const runInteractionButton = document.getElementById("runInteraction");
+        const resetDemoButton = document.getElementById("resetDemo");
+        const miniActionButton = document.getElementById("miniAction");
+
+        const htmlStateTile = document.getElementById("htmlStateTile");
+        const cssStateTile = document.getElementById("cssStateTile");
+        const jsStateTile = document.getElementById("jsStateTile");
+        const htmlStateText = document.getElementById("htmlStateText");
+        const cssStateText = document.getElementById("cssStateText");
+        const jsStateText = document.getElementById("jsStateText");
+
+        const demoStage = document.getElementById("demoStage");
+        const demoCard = document.getElementById("demoCard");
+        const demoLabel = document.getElementById("demoLabel");
+        const demoText = document.getElementById("demoText");
+        const demoList = document.getElementById("demoList");
+        const counterValue = document.getElementById("counterValue");
+        const statusBox = document.getElementById("statusBox");
+
+        const htmlCode = document.getElementById("htmlCode");
+        const cssCode = document.getElementById("cssCode");
+        const jsCode = document.getElementById("jsCode");
+        const htmlSnippet = document.getElementById("htmlSnippet");
+        const cssSnippet = document.getElementById("cssSnippet");
+        const jsSnippet = document.getElementById("jsSnippet");
+        const htmlSnippetStatus = document.getElementById("htmlSnippetStatus");
+        const cssSnippetStatus = document.getElementById("cssSnippetStatus");
+        const jsSnippetStatus = document.getElementById("jsSnippetStatus");
+
+        function renderList() {
+            demoList.innerHTML = `
+                <li>Секция с заголовком и текстом</li>
+                <li>Карточки и навигация</li>
+                <li>Кнопки для управления интерфейсом</li>
+                ${state.hasExtraItem ? '<li class="demo-extra">Новый HTML-элемент добавлен через структуру</li>' : ""}
+            `;
+        }
+
+        function applyTheme() {
+            const theme = themes[state.themeIndex];
+
+            demoStage.className = `demo-stage ${theme.className}`;
+            demoLabel.textContent = theme.label;
+            demoLabel.style.background = theme.soft;
+            demoCard.style.borderColor = theme.line;
+            demoCard.style.boxShadow = `0 18px 40px ${theme.soft}`;
+
+            document.documentElement.style.setProperty("--accent", theme.accent);
+            document.documentElement.style.setProperty("--accent-soft", theme.soft);
+        }
+
+        function renderIndicators() {
+            const theme = themes[state.themeIndex];
+
+            htmlStateText.textContent = state.hasExtraItem ? "Элемент добавлен" : "Базовая структура";
+            cssStateText.textContent = theme.label;
+            jsStateText.textContent = state.counter > 0 ? `Событий: ${state.counter}` : "Ожидание действия";
+
+            htmlSnippetStatus.textContent = state.hasExtraItem ? "Изменено" : "Базово";
+            cssSnippetStatus.textContent = `Тема ${state.themeIndex + 1}`;
+            jsSnippetStatus.textContent = state.counter > 0 ? "Активно" : "Ожидание";
+        }
+
+        function applyLeftHighlight() {
+            const pairs = [
+                ["html", htmlStateTile, htmlSnippet, htmlSnippetStatus, toggleStructureButton],
+                ["css", cssStateTile, cssSnippet, cssSnippetStatus, cycleThemeButton],
+                ["js", jsStateTile, jsSnippet, jsSnippetStatus, runInteractionButton]
+            ];
+
+            pairs.forEach(([kind, tile, snippet, status, button]) => {
+                const isActive = state.lastChanged === kind;
+                tile.classList.toggle("is-active", isActive);
+                snippet.classList.toggle("is-highlighted", isActive);
+                status.classList.toggle("is-active", isActive);
+                button.classList.toggle("is-active", isActive);
+            });
+        }
+
+        function renderCode() {
+            const theme = themes[state.themeIndex];
+            const extraLine = state.hasExtraItem
+                ? '    <li class="extra">Новый HTML-элемент</li>\n'
+                : "";
+
+            htmlCode.textContent = `<article class="demo-card">
+  <h3>Интерактивный макет</h3>
+  <ul>
+    <li>Секция с заголовком и текстом</li>
+    <li>Карточки и навигация</li>
+    <li>Кнопки для управления интерфейсом</li>
+${extraLine}  </ul>
+</article>`;
+
+            cssCode.textContent = `.demo-card {
+  border-color: ${theme.line};
+  box-shadow: 0 18px 40px ${theme.soft};
+}
+
+.demo-label {
+  background: ${theme.soft};
+  color: ${theme.accent};
+}`;
+
+            jsCode.textContent = `const state = {
+  hasExtraItem: ${state.hasExtraItem},
+  theme: "${theme.name}",
+  counter: ${state.counter}
+};
+
+runInteractionButton.addEventListener("click", () => {
+  state.counter += 1;
+  demoCard.classList.add("is-pulsing");
+});`;
+        }
+
+        function pulseCard() {
+            demoCard.classList.remove("is-pulsing");
+            demoCard.classList.remove("is-active");
+            void demoCard.offsetWidth;
+            demoCard.classList.add("is-pulsing");
+            demoCard.classList.add("is-active");
+
+            window.setTimeout(() => {
+                demoCard.classList.remove("is-active");
+            }, 900);
+        }
+
+        function setStatus(message) {
+            statusBox.textContent = message;
+        }
+
+        function updateCounter(value) {
+            counterValue.textContent = String(value);
+        }
+
+        function syncView() {
+            renderList();
+            applyTheme();
+            renderIndicators();
+            renderCode();
+            updateCounter(state.counter);
+            applyLeftHighlight();
+        }
+
+        toggleStructureButton.addEventListener("click", () => {
+            state.hasExtraItem = !state.hasExtraItem;
+            state.lastChanged = "html";
+            syncView();
+            setStatus(
+                state.hasExtraItem
+                    ? "HTML изменил структуру карточки: в список добавился новый элемент, и визуально это сразу стало заметно."
+                    : "HTML-элемент удален, поэтому карточка вернулась к исходной структуре без дополнительного блока."
+            );
+        });
+
+        cycleThemeButton.addEventListener("click", () => {
+            state.themeIndex = (state.themeIndex + 1) % themes.length;
+            state.lastChanged = "css";
+            syncView();
+            setStatus("CSS переключил тему оформления: цвет, акцент и характер карточки изменились без изменения структуры.");
+        });
+
+        function runInteraction() {
+            state.counter += 1;
+            state.lastChanged = "js";
+            syncView();
+            pulseCard();
+            demoText.textContent = "JavaScript выполнил событие: состояние обновилось, счетчик вырос, а карточка отреагировала анимацией.";
+            setStatus("JavaScript обработал действие пользователя и обновил интерфейс прямо на странице без перезагрузки.");
+        }
+
+        runInteractionButton.addEventListener("click", runInteraction);
+        miniActionButton.addEventListener("click", runInteraction);
+
+        resetDemoButton.addEventListener("click", () => {
+            state.hasExtraItem = false;
+            state.themeIndex = 0;
+            state.counter = 0;
+            state.lastChanged = "";
+            demoText.textContent = "В этом блоке объединяются три технологии: структура уже создана, стиль уже применен, а JavaScript может менять состояние содержимого.";
+            syncView();
+            setStatus("Демонстрация сброшена: снова видно исходное состояние страницы до пользовательских действий.");
+        });
+
+        const revealItems = document.querySelectorAll(".fade-up");
+
+        if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("is-visible");
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.18 });
+
+            revealItems.forEach((item) => observer.observe(item));
+        } else {
+            revealItems.forEach((item) => item.classList.add("is-visible"));
+        }
+
+        syncView();
+    </script>
+</body>
+</html>
